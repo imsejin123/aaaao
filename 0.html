@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>나-전달법 의사소통 연습실</title>
+<style>
+:root{--navy:#243b53;--blue:#3569a8;--sky:#eaf3ff;--mint:#e8f7f0;--gold:#f3c969;--ink:#24313f;--muted:#65758b;--line:#d8e1eb;--white:#fff}
+*{box-sizing:border-box} body{margin:0;background:#f4f7fb;color:var(--ink);font-family:system-ui,-apple-system,"Malgun Gothic",sans-serif;line-height:1.6}
+.wrap{max-width:980px;margin:auto;padding:22px}
+.hero{background:linear-gradient(130deg,#243b53,#3569a8);color:white;border-radius:22px;padding:28px;margin-bottom:18px}
+.hero h1{margin:0 0 8px;font-size:clamp(25px,4vw,36px)}.hero p{margin:0;color:#e7f0ff}
+.panel{background:white;border:1px solid var(--line);border-radius:18px;padding:22px;margin:16px 0;box-shadow:0 5px 18px #23384d0a}
+h2{font-size:21px;margin:0 0 12px;color:var(--navy)}h3{margin:0 0 8px}
+label{display:block;font-weight:700;margin:10px 0 5px}
+input,textarea,select{width:100%;border:1px solid #bdcad8;border-radius:10px;padding:12px;font:inherit;background:#fff;color:var(--ink)}
+textarea{min-height:120px;resize:vertical}
+button{border:0;border-radius:11px;padding:11px 16px;font:inherit;font-weight:750;cursor:pointer;background:var(--blue);color:white}
+button.secondary{background:#e9eff7;color:var(--navy)}button:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.row>*{flex:1}
+.parts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.part{background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:12px}.part b{display:block;color:var(--blue);margin-bottom:3px}
+.scenario{background:var(--sky);border-left:5px solid var(--blue);padding:16px;border-radius:12px;font-size:17px}
+.hint{font-size:14px;color:var(--muted)}.hidden{display:none!important}
+.progress{height:10px;background:#e7edf4;border-radius:20px;overflow:hidden}.progress span{display:block;height:100%;background:#39a77a;width:0%;transition:width .25s}
+.scoreline{display:flex;align-items:center;gap:15px;flex-wrap:wrap}.score{font-size:38px;font-weight:850;color:var(--blue)}
+.feedback{border-radius:12px;padding:14px;margin:10px 0;background:#f6f8fb}.feedback.good{background:var(--mint)}.feedback.warn{background:#fff6df}
+.check{display:flex;gap:8px;align-items:flex-start;margin:7px 0}.check strong{min-width:54px}
+.certificate{border:8px double #d1a83f;padding:30px;text-align:center;background:#fffdf5;color:#27384b;margin-top:14px}
+.certificate h2{font-size:30px;color:#8b6a16}.cert-name{font-size:26px;font-weight:800;margin:15px 0}.seal{display:inline-block;border:2px solid #b58a27;border-radius:50%;padding:12px 16px;color:#8b6a16;font-weight:800;margin:12px}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:15px}
+@media(max-width:650px){.parts{grid-template-columns:repeat(2,1fr)}.wrap{padding:12px}.panel{padding:16px}.hero{padding:22px}}
+@media print{body{background:white}.wrap,.hero,.panel:not(#certificatePanel),footer{display:none!important}#certificatePanel{display:block!important;border:0;box-shadow:none;margin:0;padding:0}#certificatePanel .no-print{display:none!important}.certificate{margin:0;min-height:90vh;display:flex;flex-direction:column;justify-content:center;page-break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+<h1>🗣️ 나-전달법 의사소통 연습실</h1>
+<p>상대를 비난하기보다, 내 마음과 바람을 정확하고 존중하는 말로 전해 봅시다.</p>
+</header>
+
+<section class="panel" id="startPanel">
+<h2>1. 연습 시작하기</h2>
+<label for="studentName">이름</label>
+<input id="studentName" maxlength="20" placeholder="이름을 입력해 주세요">
+<p class="hint">이름은 합격증에 표시됩니다. 실제 친구의 이름이나 민감한 개인정보는 쓰지 마세요.</p>
+<button id="startBtn">연습 시작하기</button>
+</section>
+
+<section class="panel">
+<h2>나-전달법의 네 가지 구성 요소</h2>
+<div class="parts">
+<div class="part"><b>① 사실</b>상대방의 행동을 평가하거나 비난하지 않고 구체적으로 말하기</div>
+<div class="part"><b>② 결과</b>그 행동이 나에게 미치는 영향 말하기</div>
+<div class="part"><b>③ 감정</b>그 결과로 내가 느끼는 감정 말하기</div>
+<div class="part"><b>④ 바람</b>상대방이 해 주었으면 하는 행동을 구체적으로 부탁하기</div>
+</div>
+<p class="hint">말하기 틀 예시: “네가 ___해서(사실), 나는 ___한 영향을 받아(결과) ___한 마음이 들어(감정). 앞으로는 ___해 줄 수 있겠어?(바람)”</p>
+</section>
+
+<section class="panel hidden" id="practicePanel">
+<div class="row"><div><h2>2. 갈등 상황</h2></div><div style="text-align:right"><span id="roundLabel">1번째 연습</span></div></div>
+<div class="progress"><span id="progressBar"></span></div>
+<div class="scenario" id="scenarioText"></div>
+<p class="hint">아래 상황에서 상대방에게 실제로 말할 문장을 작성해 보세요. 네 가지 요소를 모두 넣어 보세요.</p>
+<label for="answerText">내가 할 말</label>
+<textarea id="answerText" placeholder="예: 네가 ...해서, 나는 ...한 영향을 받아 ...한 마음이 들어. 앞으로는 ...해 줄 수 있겠어?"></textarea>
+<div class="row">
+<button id="reviewBtn">내 표현 점검하기</button>
+<button class="secondary" id="newScenarioBtn">다른 상황 보기</button>
+</div>
+<div id="feedbackArea" class="hidden">
+<hr style="border:0;border-top:1px solid var(--line);margin:20px 0">
+<div class="scoreline"><div class="score" id="scoreNumber">0%</div><div><strong id="scoreTitle">표현 완성도</strong><div class="hint">자동 점검은 글 속 단서에 기반한 참고 피드백입니다.</div></div></div>
+<div class="progress"><span id="scoreBar"></span></div>
+<div id="checks"></div>
+<div class="feedback" id="coachText"></div>
+<div class="row">
+<button id="tryAgainBtn" class="secondary">다시 고쳐 쓰기</button>
+<button id="nextBtn">다음 상황 도전하기</button>
+</div>
+</div>
+</section>
+
+<section class="panel hidden" id="certificatePanel">
+<h2 class="no-print">3. 연습 결과 및 합격증</h2>
+<p id="certificateIntro" class="no-print">모든 연습에서 90% 이상을 달성하면 합격증을 저장할 수 있습니다.</p>
+<div id="certificate" class="certificate hidden">
+<div style="letter-spacing:5px;color:#8b6a16;font-weight:800">HEALTHY COMMUNICATION</div>
+<h2>나-전달법 의사소통 합격증</h2>
+<div class="seal">PASS<br>90%+</div>
+<p>위 학생은 나-전달법의 구성 요소를 이해하고<br>존중하는 의사소통 표현을 연습했음을 확인합니다.</p>
+<div class="cert-name" id="certName"></div>
+<p>최종 연습 완성도: <strong id="certScore"></strong></p>
+<p>완료 날짜: <span id="certDate"></span></p>
+<div style="text-align:left;border-top:1px solid #d8c68d;margin-top:20px;padding-top:14px">
+<p><strong>연습 상황</strong><br><span id="certScenario"></span></p>
+<p><strong>학생이 작성한 나-전달법</strong><br><span id="certAnswer" style="white-space:pre-wrap"></span></p>
+</div>
+<p style="margin-top:28px">교사 확인: ____________________</p>
+<p style="font-size:12px;color:#7a8490">이 합격증은 학생의 연습 기록을 바탕으로 발급됩니다.</p>
+</div>
+<div id="lockedMessage" class="feedback warn">아직 합격 기준에 도달하지 않았습니다. 각 상황에서 표현을 점검하고 90% 이상을 달성해 보세요.</div>
+<div class="row no-print">
+<button id="saveCertBtn" disabled>합격증 인쇄 / PDF로 저장</button>
+<button id="restartBtn" class="secondary">처음부터 다시 하기</button>
+</div>
+<p class="hint no-print">저장 방법: 합격 후 버튼을 누른 뒤 인쇄 창에서 ‘PDF로 저장’을 선택하세요. 교사는 학생이 제출한 PDF를 확인할 수 있습니다.</p>
+</section>
+<footer>가정 교과 · 건강한 의사소통 연습 | 점수는 자동 피드백을 위한 참고값이며, 표현의 맥락과 진정성은 교사와 함께 확인하세요.</footer>
+</div>
+<script>
+const scenarios = [
+"모둠 활동에서 친구가 내 의견을 끝까지 듣지 않고 말을 끊었습니다.",
+"친구가 빌려 간 필기구를 약속한 날에 돌려주지 않았습니다.",
+"단체 채팅방에서 친구가 내가 보낸 질문에 답하지 않고 다른 이야기만 이어 갔습니다.",
+"모둠 과제에서 한 친구가 맡은 일을 정해진 시간까지 하지 않아 함께 마무리하기 어려웠습니다.",
+"친구가 내 허락을 구하지 않고 내 사진을 다른 친구에게 보여 주었습니다.",
+"쉬는 시간에 친구가 장난으로 내 책상 위 물건을 자꾸 옮겼습니다.",
+"친구가 함께 정한 약속 시간에 늦었고, 늦는다는 연락도 하지 않았습니다.",
+"모둠 발표를 준비하는데 친구가 내 아이디어를 듣고 비웃는 듯한 반응을 보였습니다.",
+"친구가 내가 조용히 공부하고 싶은데 옆에서 계속 큰 소리로 이야기했습니다.",
+"가족이 내가 사용하던 물건을 말없이 가져가서 제자리에 두지 않았습니다.",
+"친구가 내가 싫다고 말한 별명을 계속 불렀습니다.",
+"모둠 활동 중 친구가 내가 맡은 부분까지 자기 마음대로 바꾸었습니다."
+];
+let name="", currentScenario="", scenarioIndex=-1, attempts=0, scores=[], bestScore=0, passed=false;
+const $=id=>document.getElementById(id);
+function chooseScenario(){
+ let next; do{next=Math.floor(Math.random()*scenarios.length)}while(scenarios.length>1&&next===scenarioIndex);
+ scenarioIndex=next; currentScenario=scenarios[next];
+ $("scenarioText").textContent=currentScenario;
+ $("roundLabel").textContent=`${scores.length+1}번째 연습`;
+ $("progressBar").style.width=`${Math.min(100,scores.length/5*100)}%`;
+ $("answerText").value=""; $("feedbackArea").classList.add("hidden");
+}
+function evaluate(text){
+ const t=text.trim();
+ const facts = /(네가|너가|친구가|상대가|[가-힣]+이|[가-힣]+가|[가-힣]+을|[가-힣]+를).{0,35}(해서|했을 때|했을때|하지 않|안 하|늦|끊|가져|말하|보여|바꾸|계속|잊|않고|없어서|때문에)/.test(t)
+   || /(네가|너가|친구가|상대가)/.test(t);
+ const result = /(그래서|그 때문에|그 결과|영향|어려워|힘들어|집중|불편|기다리|못하|곤란|걱정|당황|방해|시간이|준비가|잃어버리)/.test(t);
+ const emotion = /(속상|서운|화가|짜증|불안|걱정|당황|답답|슬프|불편|놀랐|실망|억울|부담|긴장|기분|마음|감정|속이 상|힘들었)/.test(t);
+ const wish = /(앞으로|다음부터|해\s*줄|해줬|해 주|부탁|바라|원해|했으면|해주면|하지 말|말해 줘|말해주|기다려|돌려|물어봐|연락|조용히|존중|함께|약속|가능할까|줄 수 있|해줄 수 있|해 주실 수)/.test(t);
+ const profanity = /(씨발|시발|ㅅㅂ|ㅆㅂ|병신|븅신|개새끼|새끼야|지랄|ㅈㄹ|미친놈|미친년|꺼져|닥쳐|엿 먹|좆|존나|개같은)/i.test(t);
+ const sharpTone = /(너는 항상|넌 맨날|너는 맨날|왜 항상|진짜 이기적|개념이 없|짜증나게|너 때문에|네 탓|니 탓|너는 왜|바보|최악|당장|무조건|제발 좀|똑바로 해|네가 문제|너나 잘해|어쩌라고|알 바야)/.test(t);
+ const elements=[
+  {name:"사실",ok:facts,detail:facts?"상대의 구체적인 행동을 언급했어요.":"상대가 실제로 한 행동을 평가 없이 구체적으로 적어 보세요. ‘너는 이기적이야’보다 ‘네가 내 말을 끊었을 때’가 좋아요."},
+  {name:"결과",ok:result,detail:result?"그 행동이 나에게 미친 영향이 드러나요.":"그 행동 때문에 생긴 구체적인 영향이나 어려움을 덧붙여 보세요. 예: ‘내 의견을 설명하기 어려웠어’."},
+  {name:"감정",ok:emotion,detail:emotion?"내 감정이나 마음을 표현했어요.":"‘속상해’, ‘당황스러워’, ‘걱정돼’처럼 내 감정을 직접 표현해 보세요."},
+  {name:"바람",ok:wish,detail:wish?"상대가 해 주었으면 하는 행동을 요청했어요.":"상대가 앞으로 해 주었으면 하는 행동을 구체적이고 실현 가능하게 부탁해 보세요."}
+ ];
+ let score=0;
+ elements.forEach(e=>score+=e.ok?25:0);
+ if(profanity) score=Math.max(0,score-20);
+ if(sharpTone) score=Math.max(0,score-10);
+ if(t.length<18) score=Math.min(score,50);
+ if(t.length>30 && elements.filter(e=>e.ok).length===4 && !profanity && !sharpTone) score=100;
+ return {score,elements,profanity,sharpTone};
+}
+function review(){
+ const text=$("answerText").value;
+ if(!text.trim()){alert("먼저 나-전달법 문장을 작성해 주세요.");return}
+ const result=evaluate(text);
+ attempts++; bestScore=Math.max(bestScore,result.score); scores.push(result.score);
+ $("scoreNumber").textContent=result.score+"%";
+ $("scoreBar").style.width=result.score+"%";
+ $("scoreTitle").textContent=result.score>=90?"잘했어요! 합격 기준에 도달했어요.":result.score>=60?"좋은 시작이에요. 빠진 요소를 보완해 보세요.":"네 가지 요소를 하나씩 넣어 다시 도전해 보세요.";
+ $("checks").innerHTML=result.elements.map(e=>`<div class="check"><strong>${e.ok?"✅":"🔎"} ${e.name}</strong><span>${e.detail}</span></div>`).join("");
+ let coach=result.score>=90?"네 가지 요소가 잘 드러납니다. 말투가 상대를 탓하기보다 내 경험과 구체적인 부탁에 초점을 두는지 한 번 더 살펴보세요.": "피드백에서 표시된 요소를 문장에 추가해 보세요. 한 문장에 모든 내용을 자연스럽게 담되, 상대를 비난하거나 단정하지 않는 것이 중요해요.";
+ if(result.profanity) coach+=" 비속어나 욕설은 상대에게 상처를 주고 대화를 방어적으로 만들 수 있어요. 비속어를 빼고, 내가 느낀 감정과 원하는 행동을 차분하게 표현해 보세요.";
+ if(result.sharpTone) coach+=" 말투가 명령하거나 비난하는 것처럼 들리면 상대가 내용을 받아들이기 어려울 수 있어요. ‘당장 해!’ 대신 ‘앞으로는 ___해 줄 수 있겠어?’처럼 존중하는 부탁으로 바꿔 보세요.";
+ $("coachText").textContent=coach;
+ $("feedbackArea").classList.remove("hidden");
+ $("certificatePanel").classList.remove("hidden");
+ $("nextBtn").textContent=result.score>=90?"다음 상황 도전하기":"다른 상황으로 연습하기";
+ updateCertificate(result.score);
+}
+function updateCertificate(score){
+ passed=score>=90;
+ $("lockedMessage").classList.toggle("hidden",passed);
+ $("certificate").classList.toggle("hidden",!passed);
+ $("saveCertBtn").disabled=!passed;
+ $("certificateIntro").textContent=passed?"축하합니다! 90% 이상을 달성해 합격증을 저장할 수 있습니다.":"90% 이상을 달성하면 합격증을 저장할 수 있습니다.";
+ if(passed){
+  $("certName").textContent=name;
+  $("certScore").textContent=score+"%";
+  $("certDate").textContent=new Date().toLocaleDateString("ko-KR");
+  $("certScenario").textContent=currentScenario;
+  $("certAnswer").textContent=$("answerText").value.trim();
+ }
+}
+$("startBtn").onclick=()=>{
+ name=$("studentName").value.trim();
+ if(!name){alert("이름을 입력해 주세요.");$("studentName").focus();return}
+ $("startPanel").classList.add("hidden");$("practicePanel").classList.remove("hidden");chooseScenario();
+};
+$("reviewBtn").onclick=review;
+$("newScenarioBtn").onclick=()=>{if($("answerText").value.trim()&&!confirm("작성한 문장을 점검하지 않고 다른 상황으로 바꿀까요?"))return;chooseScenario()};
+$("tryAgainBtn").onclick=()=>{$("feedbackArea").classList.add("hidden");$("answerText").focus()};
+$("nextBtn").onclick=()=>{chooseScenario();$("practicePanel").scrollIntoView({behavior:"smooth",block:"start"})};
+$("saveCertBtn").onclick=()=>window.print();
+$("restartBtn").onclick=()=>{name="";scores=[];attempts=0;bestScore=0;passed=false;scenarioIndex=-1;$("studentName").value="";$("startPanel").classList.remove("hidden");$("practicePanel").classList.add("hidden");$("certificatePanel").classList.add("hidden");$("certificate").classList.add("hidden");$("lockedMessage").classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"})};
+</script>
+</body>
+</html>
